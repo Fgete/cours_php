@@ -1,0 +1,37 @@
+/* --- VARIABLES --- */
+
+:root{
+	/* colors */
+	--color_MainOrange: #ffaa00;
+	--color_MainWhite: #959595;
+}
+
+/* --- BODY --- */
+
+body{
+	display: block;
+	font-family: arial;
+
+	background-image: url("../images/index/wallpaper_virgo.png");
+}
+
+a{
+	font-weight: bold;
+	color: var(--color_MainOrange);
+	text-shadow: 0 0 7px black;
+}
+
+#panel{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	margin: auto;
+
+	width: 50vw;
+
+	border-radius: 2vw;
+
+	background-color: #bbb;
+}

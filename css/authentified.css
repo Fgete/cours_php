@@ -1,0 +1,46 @@
+/* --- VARIABLES --- */
+
+:root{
+	/* colors */
+	--color_MainOrange: #ffaa00;
+	--color_MainWhite: #959595;
+}
+
+/* --- BODY --- */
+
+body{
+	font-family: arial;
+
+	background-image: url("../images/index/wallpaper_virgo.png");
+}
+
+a{
+	font-weight: bold;
+	color: var(--color_MainOrange);
+	text-shadow: 0 0 7px black;
+}
+
+#studentTable{
+	width: 50%;
+
+	margin: auto;
+
+	border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#studentTable th{
+	border: solid 2px black;
+}
+
+#studentTable td{
+	border: solid 1px black;
+}
+
+#mark{
+	width: 50px;
+}
+
+.bold{
+	font-weight: bold;
+}
