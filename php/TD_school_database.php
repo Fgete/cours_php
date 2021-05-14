@@ -33,7 +33,7 @@
 			$result->bindValue(':PASSWORD', $password, PDO::PARAM_STR);
 			$result->bindValue(':LASTNAME', $lastname, PDO::PARAM_STR);
 			$result->bindValue(':FIRSTNAME', $firstname, PDO::PARAM_STR);
-			$result->bindValue(':ROLE', 'student', PDO::PARAM_STR); // Default role to student
+			$result->bindValue(':ROLE', 'student', PDO::PARAM_STR); // Default role set to student
 
 			// Execute request
 			$result->execute();
@@ -43,6 +43,32 @@
 
 			// Insertion feedback
 			// echo '<script>alert("Data insertion executed!");</script>';
+		}
+
+		catch(PDOException $e){
+			echo "Error : ".$e->getMessage();
+		}
+	}
+
+	function AddMark($conn, $login, $matter, $mark){
+		$req = 'INSERT INTO Mark (MATTER, STUDENT, MARK) VALUES (:MATTER, :STUDENT, :MARK)';
+
+		try{
+			// Prepared request
+			$result = $conn->prepare($req);
+
+			$result->bindValue(':MATTER', $matter, PDO::PARAM_STR);
+			$result->bindValue(':STUDENT', $login, PDO::PARAM_STR);
+			$result->bindValue(':MARK', $mark, PDO::PARAM_INT);
+
+			// Execute request
+			$result->execute();
+
+			// Close database
+			$result->closeCursor();
+
+			// Insertion feedback
+			echo '<script>alert("Data insertion executed!");</script>';
 		}
 
 		catch(PDOException $e){
@@ -74,8 +100,9 @@
 
 	function GetMarkList($conn){
 		$marks = [];
-		$req = 'SELECT *
-				FROM Mark';
+		$req = 'SELECT CONCAT(User.LASTNAME, " ", User.FIRSTNAME) AS STUDENT, User.LOGIN, Mark.MATTER, Mark.MARK
+				FROM Mark, User
+				WHERE Mark.STUDENT = User.LOGIN';
 		try{
 			$result = $conn->query($req);
 

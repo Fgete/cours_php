@@ -56,10 +56,8 @@ alter table `Matter` add foreign key (`PROF`) references `Professor` (`LOGIN`);
 create table Mark(
 	MATTER varchar(50) not null,
 	STUDENT varchar(50) not null,
-	PROFESSOR varchar(50) not null,
 	MARK int(2) not null
 ) engine = InnoDB;
 
 alter table `Mark` add foreign key (`MATTER`) references `Matter` (`MATTER_NAME`);
-alter table `Mark` add foreign key (`PROFESSOR`) references `Professor` (`LOGIN`);
 alter table `Mark` add foreign key (`STUDENT`) references `Student` (`LOGIN`);

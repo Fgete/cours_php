@@ -26,6 +26,32 @@
 
 				<!-- TEACHER HTML -->
 				<h1>Hello <?php echo $user['FIRSTNAME']; ?></h1>
+
+				<form method="POST">
+					<label for="search">Enter student name :</label>
+					<input type="text" name="searchStudent" placeholder="Student">
+					<input type="text" name="searchMatter" placeholder="Matter">
+					<input type="submit" name="submit">
+				</form>
+
+				<?php
+
+					$searchStudent = null;
+					$searchMatter = null;
+
+					if ($_POST != null){
+						if (isset($_POST['searchStudent']))
+							$searchStudent = $_POST['searchStudent'];
+						if (isset($_POST['searchMatter']))
+							$searchMatter = $_POST['searchMatter'];
+					}
+
+					if ($marks == null)
+						echo "<h2>WARNING -- No data found!</h2>";
+
+				?>
+
+
 				<table id="studentTable">
 					<thead>
 						<tr>
@@ -33,17 +59,57 @@
 						</tr>
 						<tr>
 							<th>Name</th>
-							<th>Domain</th>
+							<th>Matter</th>
 							<th>Mark</th>
 						</tr>
 					</thead>
 					<tbody id="studentTableBody">
 						<?php
-							foreach ($marks as $mark)
-								echo "<tr><td>".$mark['STUDENT']."</td><td>".$mark['MATTER']."</td><td>".$mark['MARK']."</td></tr>";
+							if (strlen($searchStudent)){
+								if (strlen($searchMatter)){
+									foreach ($marks as $mark)
+										if ($mark['STUDENT'] == $searchStudent && $mark['MATTER'] == $searchMatter)
+											echo "<tr><td>".$mark['STUDENT']."</td><td>".$mark['MATTER']."</td><td>".$mark['MARK']."</td></tr>";
+								}
+								else{
+									foreach ($marks as $mark)
+										if ($mark['STUDENT'] == $searchStudent)
+											echo "<tr><td>".$mark['STUDENT']."</td><td>".$mark['MATTER']."</td><td>".$mark['MARK']."</td></tr>";
+								}
+							}else{
+								if (strlen($searchMatter)){
+									foreach ($marks as $mark)
+										if ($mark['MATTER'] == $searchMatter)
+											echo "<tr><td>".$mark['STUDENT']."</td><td>".$mark['MATTER']."</td><td>".$mark['MARK']."</td></tr>";
+								}
+								else{
+									foreach ($marks as $mark)
+										echo "<tr><td>".$mark['STUDENT']."</td><td>".$mark['MATTER']."</td><td>".$mark['MARK']."</td></tr>";
+								}
+							}
+								
 						?>
 					</tbody>
 				</table>
+
+
+				<?php
+					$studentFound = false;
+					$sommeMark = 0;
+					$numberMark = 0;
+
+					foreach ($marks as $mark)
+						if ($mark['STUDENT'] == $searchStudent){
+							$studentFound = true;
+							$sommeMark += $mark['MARK'];
+							$numberMark++;
+						}
+
+					if (!$studentFound)
+						echo "<h3>WARNING -- Student not found!</h3>";
+					else
+						echo "Student global average : ".($sommeMark / $numberMark);
+				?>
 				<fieldset>
 					<legend>Add mark</legend>
 					<form method="post">
@@ -61,9 +127,9 @@
 							?>
 				       </select>
 				       <!-- DOMAIN -->
-						<label for="domain">Domain :</label>
-					    <select name="domain" id="domain" required>
-					    	<option value="" selected>--- Domain ---</option>
+						<label for="matter">Matter :</label>
+					    <select name="matter" id="matter" required>
+					    	<option value="" selected>--- Matter ---</option>
 				        	<?php
 				        		$uniques = [];
 								foreach ($marks as $mark)
@@ -118,14 +184,29 @@
 
 				<?php
 			}
-
+			
 			if ($user['ROLE'] == 'professor' && sizeof($_POST) != 0){
-				$newName = $_POST['name'];
-				$newDomain = $_POST['domain'];
-				$newMark = $_POST['mark'];
 
-				echo "Your trying to add a <span class='bold'>".$newMark."</span> in <span class='bold'>".$newDomain."</span> to <span class='bold'>".$newName."</span>.<br>";
+				$newName = null;
+				$newMatter = null;
+				$newMark = null;
+
+				if (isset($_POST['name']))
+					$newName = $_POST['name'];
+				if (isset($_POST['matter']))
+					$newMatter = $_POST['matter'];
+				if (isset($_POST['mark']))
+					$newMark = $_POST['mark'];
+
+				$newLogin = null;
+				foreach ($marks as $mark)
+					if ($mark['STUDENT'] == $newName)
+						$newLogin = $mark['LOGIN'];
+
+				if ($newName && $newMatter && $newMark)
+					AddMark($conn, $newLogin, $newMatter, $newMark);
 			}
+			
 		?>
 		<a href="./TD_Logout.php">Logout -></a>
 	</body>
