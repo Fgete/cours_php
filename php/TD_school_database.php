@@ -21,20 +21,19 @@
 		return $connexion;
 	}
 
-	// $conn = new mysqli(SERVER, USER, PASSWD, BASE);
-
 	// Create client : only for professor use
-	function AddMark($conn){
-		$req = 'INSERT INTO Mark (MATTER, STUDENT, PROFESSOR, MARK) VALUES (:MATTER, :STUDENT, :PROFESSOR, :MARK)';
+	function AddUser($conn, $login, $password, $lastname, $firstname){
+		$req = 'INSERT INTO User (LOGIN, PASSWORD, LASTNAME, FIRSTNAME, ROLE) VALUES (:LOGIN, :PASSWORD, :LASTNAME, :FIRSTNAME, :ROLE)';
 
 		try{
 			// Prepared request
 			$result = $conn->prepare($req);
 
-			$result->bindValue(':MATTER', $_GET['matter'],       PDO::PARAM_STR);
-			$result->bindValue(':STUDENT', $_GET['student'],     PDO::PARAM_STR);
-			$result->bindValue(':PROFESSOR', $_GET['professor'], PDO::PARAM_STR);
-			$result->bindValue(':MARK', $_GET['mark'],           PDO::PARAM_INT);
+			$result->bindValue(':LOGIN', $login, PDO::PARAM_STR);
+			$result->bindValue(':PASSWORD', $password, PDO::PARAM_STR);
+			$result->bindValue(':LASTNAME', $lastname, PDO::PARAM_STR);
+			$result->bindValue(':FIRSTNAME', $firstname, PDO::PARAM_STR);
+			$result->bindValue(':ROLE', 'student', PDO::PARAM_STR); // Default role to student
 
 			// Execute request
 			$result->execute();
@@ -43,7 +42,7 @@
 			$result->closeCursor();
 
 			// Insertion feedback
-			echo '<script>alert("Data insertion executed!");</script>';
+			// echo '<script>alert("Data insertion executed!");</script>';
 		}
 
 		catch(PDOException $e){
@@ -73,6 +72,46 @@
 		}
 	}
 
+	function GetMarkList($conn){
+		$marks = [];
+		$req = 'SELECT *
+				FROM Mark';
+		try{
+			$result = $conn->query($req);
+
+			while($data = $result->fetch(PDO::FETCH_ASSOC)){
+				$marks[] = $data;
+			}
+
+			$result->closeCursor();
+
+			return $marks;
+		}
+		catch(PDOException $e){
+			echo "Error : ".$e->getMessage();
+		}
+	}
+
+	function GetMarkTestList($conn){
+		$marks = [];
+		$req = 'SELECT *
+				FROM MarkTest';
+		try{
+			$result = $conn->query($req);
+
+			while($data = $result->fetch(PDO::FETCH_ASSOC)){
+				$marks[] = $data;
+			}
+
+			$result->closeCursor();
+
+			return $marks;
+		}
+		catch(PDOException $e){
+			echo "Error : ".$e->getMessage();
+		}
+	}
+
 	function GetLoginPassword($conn){
 		$logPwd = [];
 		$req = 'SELECT DISTINCT LOGIN, PASSWORD
@@ -95,7 +134,7 @@
 
 	function GetUserByLogin($conn, $login){
 
-		$req = 'SELECT LOGIN, LASTNAME, FIRSTNAME
+		$req = 'SELECT LOGIN, LASTNAME, FIRSTNAME, ROLE
 				FROM User
 				WHERE LOGIN = "'.$login.'"';
 

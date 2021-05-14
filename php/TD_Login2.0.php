@@ -21,6 +21,8 @@
 			// rechercher par requête les notes
 			// formulaire d'ajout de note dans la base (refresh)
 
+			session_start();
+
 			// --- SETUP BDD ---
 
 			include "./TD_school_database.php";
@@ -29,8 +31,6 @@
 			$loggedUser;
 
 			// --- TREATMENT ---
-
-			session_start();
 
 			if (sizeof($_POST) != 0){ // If there is informations in $_POST
 				if ($_POST["typeForm"] == "login"){ // If we are LOGGING IN
@@ -41,8 +41,10 @@
 					foreach ($logPwd as $user)
 						if ($login == $user['LOGIN'] && $password == $user['PASSWORD'])
 							$loggedUser = $user['LOGIN'];
-					if ($loggedUser != null)
-						header("Location: ./TD_Authentified.php");
+					if ($loggedUser != null){
+						$_SESSION['login'] = $loggedUser;
+						header("Location: ./TD_Authentified2.0.php");
+					}
 					else
 						header("Location: ./TD_login2.0.php?erreur=1");
 
@@ -55,17 +57,21 @@
 					$lastname = $_POST["lastname"];
 					// In default case, the registered user is a student
 
-					if ($password == $confirmPassword && strcspn($password, '0123456789') != strlen($password)){
-						// Passwords ok
-						// ---###--- PUSH INFORMATIONS IN DATABASE ---###---
+					// Verify if login is unique
+					$isUnique = true;
+					foreach ($logPwd as $user)
+						if ($user['LOGIN'] == $login)
+							$isUnique = false;
+
+					if ($isUnique && $password == $confirmPassword && strcspn($password, '0123456789') != strlen($password)){
+						// Passwords ok & login unique
+						AddUser($conn, $login, $password, $lastname, $firstname);
 						echo "<script>alert('You are succesfully registered. Please log you in.');</script>";
 					} else {
 						// Passwords not ok
 						header("Location: ./TD_login2.0.php?erreur=0");
 					}
 				}
-
-				var_dump($_POST["typeForm"]);
 			}
 		?>
 
