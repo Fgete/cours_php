@@ -32,6 +32,9 @@
 
 			// --- TREATMENT ---
 
+			if (isset($_SESSION['login']))
+				header("Location: ./TD_Authentified2.0.php");
+
 			if (sizeof($_POST) != 0){ // If there is informations in $_POST
 				if ($_POST["typeForm"] == "login"){ // If we are LOGGING IN
 
@@ -89,7 +92,7 @@
 					<label for="password">Login</label>
 					<input type="text" id="login" name="login" required>
 					<label for="password">Password</label>
-					<input type="text" id="password" name="password" required>
+					<input type="password" id="password" name="password" required>
 
 					<input type="submit" name="submit" id="submit" value="Submit">
 					<input type="reset" name="reset" id="reset" value="Reset">
@@ -110,7 +113,7 @@
 					<label for="lastname">Lastname</label>
 					<input type="text" id="lastname" name="lastname" required min="3">
 					<label for="password">Password</label>
-					<div class="subtitle">Your password may contain at least 8 character and a number.</div>
+					<div class="subtitle">Your password may contain at least 8 character including a number.</div>
 					<input type="text" id="password" name="password" required min="8">
 					<label for="confirmPassword">Confirm password</label>
 					<input type="text" id="confirmPassword" name="confirmPassword" required min="8">

@@ -68,7 +68,7 @@
 			$result->closeCursor();
 
 			// Insertion feedback
-			echo '<script>alert("Data insertion executed!");</script>';
+			echo '<script>alert("Mark added to '.$login.'");</script>';
 		}
 
 		catch(PDOException $e){
