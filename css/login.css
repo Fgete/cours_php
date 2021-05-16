@@ -4,21 +4,26 @@
 	/* colors */
 	--color_MainOrange: #ffaa00;
 	--color_MainWhite: #959595;
+	--color_MainBlue: #2255ff;
+	--color_MainDarkBlue: #1144ff;
 }
 
 /* --- BODY --- */
 
 body{
-	display: block;
-	font-family: arial;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
 
-	background-image: url("../images/index/wallpaper_virgo.png");
+	font-family: Trebuchet MS;
+
+	background-color: var(--color_MainBlue);
 }
 
 a{
-	font-weight: bold;
-	color: var(--color_MainOrange);
-	text-shadow: 0 0 7px black;
+	color: white;
+	text-decoration: none;
 }
 
 #loginInvalid, #registerInvalid{
@@ -36,4 +41,111 @@ a{
 .subtitle{
 	font-size: .7em;
 	opacity: 50%;
+}
+
+header{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+
+	width: 100%;
+}
+
+#hTitle{
+	font-size: 2em;
+	font-weight: 800;
+	color: white;
+}
+
+#hLink{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	width: 8em;
+	height: 2.5em;
+
+	border: solid 2px white;
+	border-radius: 2px;
+}
+
+#hLink:hover{
+	background-color: rgba(255,255,255,.1);
+}
+
+.panel{
+	width: 20vw;
+	height: 30vh;
+
+	padding: 2%;
+
+	margin-top: 5vh;
+
+	background-color: white;
+	border-radius: 5px;
+}
+
+.title{
+	color: white;
+	font-weight: 100;
+}
+
+input[type=text], input[type=password]{
+	width: 80%;
+	height: 2.5em;
+
+	padding-left: 3%;
+
+	background-color: none;
+	border: solid 1px lightgrey;
+	border-radius: 2px;
+}
+
+input[type=text]:focus, input[type=password]:focus{
+	border: solid 1px var(--color_MainBlue);
+	box-shadow: 0 0 10px var(--color_MainBlue);
+}
+
+.buttons{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+
+	width: 100%;
+}
+
+input[type=submit], input[type=reset]{
+	width: 30%;
+	height: 2.5em;
+
+	color: white;
+
+	background-color: var(--color_MainBlue);
+	border: none;
+	border-radius: 2px;
+
+	cursor: pointer;
+
+	text-transform: uppercase;
+}
+
+input[type=submit]:hover, input[type=reset]:hover{
+	background-color: var(--color_MainDarkBlue);
+}
+
+#switchFormButton{
+	margin-top: 5vh;
+
+	font-size: 1em;
+	color: white;
+	background-color: var(--color_MainBlue);
+	border: none;
+	cursor: pointer;
+}
+
+#switchFormButton:hover{
+	text-decoration: underline;
 }

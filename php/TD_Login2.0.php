@@ -8,18 +8,13 @@
 	</head>
 	<body>
 
+		<header>
+			<div id="hTitle">school</div>
+			<a href="../index.php"><div id="hLink">Back to index</div></a>
+		</header>
+
 		<!-- PHP -->
 		<?php
-
-			// V2.0
-			// créer un formulaire 'REGISTER' (créer un compte)
-			// tester si le pwd est correct (A0*x2)
-			// tester si l'utilisateur n'éxiste pas déjà en base
-			// créer un formulaire 'LOGIN' (connexion) --OK
-
-			// créer base de notes
-			// rechercher par requête les notes
-			// formulaire d'ajout de note dans la base (refresh)
 
 			session_start();
 
@@ -78,48 +73,43 @@
 			}
 		?>
 
-		<a href="../index.php"><< Retour index</a>
-
 		<div id="content" class="flex">
 
 			<!-- LOGIN FORM -->
 			<div id="loginPanel" class="flex">
-				<form id="loginForm" class="flex" method="post">
-					<h1>Login</h1>
+				<h1 class="title">Login to school</h1>
+				<form id="loginForm" class="flex panel" method="post">
 					<h5 id="loginInvalid">Invalid login or password</h5>
 					<input type="text" name="typeForm" value="login" hidden>
 
-					<label for="password">Login</label>
-					<input type="text" id="login" name="login" required>
-					<label for="password">Password</label>
-					<input type="password" id="password" name="password" required>
+					<input type="text" id="login" name="login" placeholder="Login" required>
+					<input type="password" id="password" name="password" placeholder="Password" required>
 
-					<input type="submit" name="submit" id="submit" value="Submit">
-					<input type="reset" name="reset" id="reset" value="Reset">
+					<div class="buttons">
+						<input type="reset" name="reset" id="reset" value="Reset">
+						<input type="submit" name="submit" id="submit" value="Submit">
+					</div>
 				</form>
 			</div>
 
 			<!-- REGISTER FORM -->
 			<div id="registerPanel" class="flex" style="display: none;">
-				<form id="registerForm" class="flex" method="post">
-					<h1>Register</h1>
+				<h1 class="title">Register to school</h1>
+				<form id="registerForm" class="flex panel" method="post">
 					<h5 id="registerInvalid">Invalid informations</h5>
 					<input type="text" name="typeForm" value="register" hidden>
 
-					<label for="login">Login</label>
-					<input type="text" id="login" name="login" required min="3">
-					<label for="firstname">Firstname</label>
-					<input type="text" id="firstname" name="firstname" required min="3">
-					<label for="lastname">Lastname</label>
-					<input type="text" id="lastname" name="lastname" required min="3">
-					<label for="password">Password</label>
+					<input type="text" id="login" name="login" placeholder="Login" required min="3">
+					<input type="text" id="firstname" name="firstname" placeholder="Firstname" required min="3">
+					<input type="text" id="lastname" name="lastname" placeholder="Lastname" required min="3">
 					<div class="subtitle">Your password may contain at least 8 character including a number.</div>
-					<input type="text" id="password" name="password" required min="8">
-					<label for="confirmPassword">Confirm password</label>
-					<input type="text" id="confirmPassword" name="confirmPassword" required min="8">
+					<input type="password" id="password" name="password" placeholder="Password" required min="8">
+					<input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required min="8">
 
-					<input type="submit" name="submit" id="submit" value="Submit">
-					<input type="reset" name="reset" id="reset" value="Reset">
+					<div class="buttons">
+						<input type="reset" name="reset" id="reset" value="Reset">
+						<input type="submit" name="submit" id="submit" value="Submit">
+					</div>
 				</form>
 			</div>
 

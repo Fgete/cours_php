@@ -5,13 +5,13 @@
 	--color_MainOrange: #ffaa00;
 	--color_MainWhite: #959595;
 	--color_MainShadow: rgba(0, 0, 0, .5);
+	--color_MainBlue: #2255ff;
+	--color_MainDarkBlue: #1144ff;
 }
 
 /* --- BODY --- */
 
 body{
-	font-family: arial;
-
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -22,26 +22,140 @@ body{
 
 	height: 98vh;
 
-	background-image: url("../images/index/wallpaper_virgo.png");
+	font-family: Trebuchet MS;
+
+	background-color: var(--color_MainBlue);
 }
 
 a{
-	font-weight: bold;
-	color: black;
+	color: white;
 	text-decoration: none;
-	transition: .2s;
+}
+
+#hNavigation{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#hLogout:hover{
+	text-decoration: underline;
 }
 
 fieldset{
-	border-radius: 1vh;
+	border-radius: 2px;
 	border: none;
-
 	background-color: white;
 	box-shadow: 0 0 100px var(--color_MainShadow);
+
+	width: 100%;
+}
+
+legend{
+	font-size: 2em;
+	color: white;
+	text-shadow: 0 0 10px var(--color_MainBlue);
+}
+
+fieldset form{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+
+	width: 100%;
+}
+
+fieldset form div{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	width: 100%;
+}
+
+fieldset form div input, fieldset form div select{
+	margin: 1%;
 }
 
 legend{
 	font-weight: bold;
+}
+
+header{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+
+	width: 100%;
+}
+
+#hTitle{
+	font-size: 2em;
+	font-weight: 800;
+	color: white;
+}
+
+#hLink{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	width: 8em;
+	height: 2.5em;
+
+	border: solid 2px white;
+	border-radius: 2px;
+
+	margin-left: 2vw;
+}
+
+#hLink:hover{
+	background-color: rgba(255,255,255,.1);
+}
+
+input[type=text], input[type=password], input[type=number], select{
+	width: 100%;
+	height: 2.5em;
+
+	padding-left: 3%;
+
+	background-color: none;
+	border: solid 1px lightgrey;
+	border-radius: 2px;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=number]:hover, select:hover{
+	border: solid 1px var(--color_MainBlue);
+	box-shadow: 0 0 10px var(--color_MainBlue);
+}
+
+input[type=submit], input[type=reset]{
+	width: 30%;
+	height: 2.5em;
+
+	color: white;
+
+	background-color: var(--color_MainBlue);
+	border: none;
+	border-radius: 2px;
+
+	cursor: pointer;
+
+	text-transform: uppercase;
+}
+
+input[type=submit]:hover, input[type=reset]:hover{
+	background-color: var(--color_MainDarkBlue);
+}
+
+input[type=number]{
+	-moz-appearance: textfield;
+    appearance: textfield;
 }
 
 #studentTable{
@@ -52,30 +166,24 @@ legend{
 	border-collapse: collapse;
     border-spacing: 0;
 
-    background-color: white;
-    box-shadow: 0 0 100px var(--color_MainShadow);
+    background-color: none;
+    box-shadow: 0 0 50px rgba(0,0,0,.3);
 }
 
 #studentTable th{
-	border: solid 2px black;
+	border: solid 2px var(--color_MainBlue);
+	color: var(--color_MainBlue);
+	background-color: white;
 }
 
 #studentTable td{
-	border: solid 1px black;
-}
-
-#mark{
-	width: 50px;
+	border-bottom: solid 1px var(--color_MainBlue);
+	color: var(--color_MainBlue);
+	background-color: white;
 }
 
 .bold{
 	font-weight: bold;
-}
-
-#profilPicture{
-	height: 200px;
-
-	margin: 1%;
 }
 
 #contentPanel{
@@ -90,7 +198,7 @@ legend{
 #userPanel{
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
+	justify-content: center;
 	align-items: center;
 
 	width: 30%;
@@ -98,9 +206,18 @@ legend{
 
 	padding: 1%;
 	border-radius: 1vh;
+}
 
-	background-color: white;
-	box-shadow: 0 0 100px var(--color_MainShadow);
+#userPanel h1{
+	color: white;
+	z-index: 1;
+}
+
+#userPanel img{
+	border-radius: 50%;
+	width: 60%;
+	box-shadow: 0 0 100px black;
+	z-index: 0;
 }
 
 #dataPanel{
@@ -114,52 +231,24 @@ legend{
 
 	padding: 1%;
 	border-radius: 1vh;
-
-	background-color: white;
-	box-shadow: 0 0 100px var(--color_MainShadow);
 }
 
 #tablePanel{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
 	width: 100%;
 	height: 50%;
 
 	padding: 1%;
 
 	overflow-y: scroll;
+	scrollbar-width: thin;
 }
 
-.button{
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-
-	height: 4vh;
-
-	padding-left: 1vh;
-	padding-right: 1vh;
-
-	border-radius: 2vh;
-
-	background-color: white;
-	box-shadow: 0 0 100px var(--color_MainShadow);
-
-	transition: .2s;
-}
-
-.button:hover{
-	box-shadow: 0 0 20px var(--color_MainOrange);
-}
-
-.button:hover a{
-	color: var(--color_MainOrange);
-}
-
-#navigationPanel{
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
-
-	width: 20%;
+#average{
+	color: white;
+	margin-left: 30%;
 }

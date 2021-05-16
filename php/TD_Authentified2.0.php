@@ -7,10 +7,13 @@
 		<link rel="stylesheet" type="text/css" href="../css/authentified.css">
 	</head>
 	<body>
-		<div id="navigationPanel">
-			<div class="button">
-				<a href="../index.php">Retour index</a>
+		<header>
+			<div id="hTitle">school</div>
+			<div id="hNavigation">
+				<a href="./TD_Logout2.0.php" id="hLogout">Logout</a>
+				<a href="../index.php"><div id="hLink">Back to index</div></a>
 			</div>
+		</header>
 
 		<?php
 			include "./TD_school_database.php";
@@ -29,10 +32,6 @@
 			if ($user['ROLE'] == 'professor'){
 				// --- BUILD TEACHER INTERFACE ---
 				?>
-					<div class="button">
-						<a href="./TD_Logout2.0.php">Logout</a>
-					</div>
-				</div>
 
 				<!-- TEACHER HTML -->
 				<div id="contentPanel">
@@ -45,10 +44,13 @@
 						<fieldset>
 							<legend>Search</legend>
 							<form method="POST">
-								<label for="search">Enter student name :</label>
-								<input type="text" name="searchStudent" placeholder="Student">
-								<input type="text" name="searchMatter" placeholder="Matter">
-								<input type="submit" name="submit" value="Submit">
+								<div>
+									<input type="text" name="searchStudent" placeholder="Student">
+									<input type="text" name="searchMatter" placeholder="Matter">
+								</div>
+								<div>
+									<input type="submit" name="submit" value="Submit">
+								</div>
 							</form>
 						</fieldset>
 
@@ -107,61 +109,63 @@
 									?>
 								</tbody>
 							</table>
+
+							<?php
+								$studentFound = false;
+								$sommeMark = 0;
+								$numberMark = 0;
+
+								foreach ($marks as $mark)
+									if ($mark['STUDENT'] == $searchStudent){
+										$studentFound = true;
+										$sommeMark += $mark['MARK'];
+										$numberMark++;
+									}
+
+								if (!$studentFound && strlen($searchStudent))
+									echo "<h4 id='average'>WARNING -- Student not found!</h4>";
+								else if (strlen($searchStudent))
+									echo "<h4 id='average'>Student global average : ".($sommeMark / $numberMark)."</h4>";
+							?>
+
 						</div>
-
-						<?php
-							$studentFound = false;
-							$sommeMark = 0;
-							$numberMark = 0;
-
-							foreach ($marks as $mark)
-								if ($mark['STUDENT'] == $searchStudent){
-									$studentFound = true;
-									$sommeMark += $mark['MARK'];
-									$numberMark++;
-								}
-
-							if (!$studentFound && strlen($searchStudent))
-								echo "<h3>WARNING -- Student not found!</h3>";
-							else if (strlen($searchStudent))
-								echo "Student global average : ".($sommeMark / $numberMark);
-						?>
 
 						<fieldset>
 							<legend>Add mark</legend>
 							<form method="post">
-								<!-- NAME -->
-								<label for="name">Student :</label>
-							    <select name="name" id="name" required>
-							    	<option value="" selected>--- Student ---</option>
-						        	<?php
-						        		$uniques = [];
-										foreach ($students as $student)
-											if (!in_array($student['LASTNAME']." ".$student['FIRSTNAME'], $uniques)){
-												echo "<option value='".$student['LASTNAME']." ".$student['FIRSTNAME']."'>".$student['LASTNAME']." ".$student['FIRSTNAME']."</option>";
-												array_push($uniques, $student['LASTNAME']." ".$student['FIRSTNAME']);
-											}
-									?>
-						       </select>
-						       <!-- DOMAIN -->
-								<label for="matter">Matter :</label>
-							    <select name="matter" id="matter" required>
-							    	<option value="" selected>--- Matter ---</option>
-						        	<?php
-						        		$uniques = [];
-										foreach ($marks as $mark)
-											if (!in_array($mark['MATTER'], $uniques)){
-												echo "<option value='".$mark['MATTER']."'>".$mark['MATTER']."</option>";
-												array_push($uniques, $mark['MATTER']);
-											}
-									?>
-						       </select>
-						       <!-- MARK -->
-								<label for="mark">Mark :</label>
-							    <input type="number" name="mark" id="mark" min="0" max="20" placeholder="Mark" required>
+								<div>
+									<!-- NAME -->
+								    <select name="name" id="name" required>
+								    	<option value="" selected>--- Student ---</option>
+							        	<?php
+							        		$uniques = [];
+											foreach ($students as $student)
+												if (!in_array($student['LASTNAME']." ".$student['FIRSTNAME'], $uniques)){
+													echo "<option value='".$student['LASTNAME']." ".$student['FIRSTNAME']."'>".$student['LASTNAME']." ".$student['FIRSTNAME']."</option>";
+													array_push($uniques, $student['LASTNAME']." ".$student['FIRSTNAME']);
+												}
+										?>
+							        </select>
+							        <!-- DOMAIN -->
+								    <select name="matter" id="matter" required>
+								    	<option value="" selected>--- Matter ---</option>
+							        	<?php
+							        		$uniques = [];
+											foreach ($marks as $mark)
+												if (!in_array($mark['MATTER'], $uniques)){
+													echo "<option value='".$mark['MATTER']."'>".$mark['MATTER']."</option>";
+													array_push($uniques, $mark['MATTER']);
+												}
+										?>
+							        </select>
+							        <!-- MARK -->
+								    <input type="number" name="mark" id="mark" min="0" max="20" placeholder="Mark" required>
+								</div>
 
-								<input type="reset" name="reset" value="Reset">
-								<input type="submit" name="submit" value="Submit">
+							    <div>
+							    	<input type="reset" name="reset" value="Reset">
+									<input type="submit" name="submit" value="Submit">
+							    </div>
 							</form>
 						</fieldset>
 					</div>
@@ -171,16 +175,17 @@
 			}else if ($user['ROLE'] == 'student'){
 				// --- BUILD STUDENT INTERFACE ---
 				?>
-					<div class="button">
-						<a href="./TD_Logout2.0.php">Logout</a>
-					</div>
-				</div>
 
 				<!-- STUDENT HTML -->
 				<div id="contentPanel">
 					<div id="userPanel">
 						<h1>Hello <?php echo $user['FIRSTNAME']; ?></h1>
-						<?php echo '<img id="profilPicture" src="../images/users/'.$user["LOGIN"].'.jpg">'; ?>
+						<?php
+							if (file_exists("../images/users/".$user['LOGIN'].".jpg"))
+								echo '<img id="profilPicture" src="../images/users/'.$user["LOGIN"].'.jpg">';
+							else
+								echo '<img id="profilPicture" src="../images/users/default.jpg">';
+						?>
 					</div>
 
 					<div id="dataPanel">
@@ -204,25 +209,28 @@
 									?>
 								</tbody>
 							</table>
+
+							<?php
+								$studentFound = false;
+								$sommeMark = 0;
+								$numberMark = 0;
+
+								foreach ($marks as $mark)
+									if ($mark['STUDENT'] == ($user['LASTNAME']." ".$user['FIRSTNAME'])){
+										$studentFound = true;
+										$sommeMark += $mark['MARK'];
+										$numberMark++;
+									}
+
+								if (!$studentFound)
+									echo "<h4 id='average'>You don't have any marks.</h4>";
+								else
+									echo "<h4 id='average'>Your global average : ".($sommeMark / $numberMark)."</h4>";
+							?>
+
 						</div>
 
-						<?php
-							$studentFound = false;
-							$sommeMark = 0;
-							$numberMark = 0;
-
-							foreach ($marks as $mark)
-								if ($mark['STUDENT'] == ($user['LASTNAME']." ".$user['FIRSTNAME'])){
-									$studentFound = true;
-									$sommeMark += $mark['MARK'];
-									$numberMark++;
-								}
-
-							if (!$studentFound)
-								echo "<h3>You don't have any marks.</h3>";
-							else
-								echo "Your global average : ".($sommeMark / $numberMark);
-						?>
+						
 					</div>
 				</div>
 
@@ -239,6 +247,7 @@
 				<?php
 			}
 			
+			// --- ADDING MARK ---
 			if ($user['ROLE'] == 'professor' && sizeof($_POST) != 0){
 
 				$newName = null;
@@ -253,9 +262,9 @@
 					$newMark = $_POST['mark'];
 
 				$newLogin = null;
-				foreach ($marks as $mark)
-					if ($mark['STUDENT'] == $newName)
-						$newLogin = $mark['LOGIN'];
+				foreach ($students as $student)
+					if ($student['LASTNAME']." ".$student['FIRSTNAME'] == $newName)
+						$newLogin = $student['LOGIN'];
 
 				if ($newName && $newMatter && $newMark)
 					AddMark($conn, $newLogin, $newMatter, $newMark);

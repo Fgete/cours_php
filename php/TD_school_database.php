@@ -24,10 +24,12 @@
 	// Create client : only for professor use
 	function AddUser($conn, $login, $password, $lastname, $firstname){
 		$req = 'INSERT INTO User (LOGIN, PASSWORD, LASTNAME, FIRSTNAME, ROLE) VALUES (:LOGIN, :PASSWORD, :LASTNAME, :FIRSTNAME, :ROLE)';
+		$addStu = 'INSERT INTO Student (LOGIN, LASTNAME, FIRSTNAME) VALUES (:LOGIN, :LASTNAME, :FIRSTNAME)';
 
 		try{
 			// Prepared request
 			$result = $conn->prepare($req);
+			$update = $conn->prepare($addStu);
 
 			$result->bindValue(':LOGIN', $login, PDO::PARAM_STR);
 			$result->bindValue(':PASSWORD', $password, PDO::PARAM_STR);
@@ -35,11 +37,17 @@
 			$result->bindValue(':FIRSTNAME', $firstname, PDO::PARAM_STR);
 			$result->bindValue(':ROLE', 'student', PDO::PARAM_STR); // Default role set to student
 
+			$update->bindValue(':LOGIN', $login, PDO::PARAM_STR);
+			$update->bindValue(':LASTNAME', $lastname, PDO::PARAM_STR);
+			$update->bindValue(':FIRSTNAME', $firstname, PDO::PARAM_STR);
+
 			// Execute request
 			$result->execute();
+			$update->execute();
 
 			// Close database
 			$result->closeCursor();
+			$update->closeCursor();
 
 			// Insertion feedback
 			// echo '<script>alert("Data insertion executed!");</script>';
@@ -68,7 +76,7 @@
 			$result->closeCursor();
 
 			// Insertion feedback
-			echo '<script>alert("Mark added to '.$login.'");</script>';
+			echo '<script>alert("Mark added to '.$login.'. Pleased reload to see the modifactions.");</script>';
 		}
 
 		catch(PDOException $e){
